@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 class StateMachine {
 	constructor(states) {
 		this.currentState = null;
