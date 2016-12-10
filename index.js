@@ -1,17 +1,7 @@
-module.exports = {
-	hello: function() {
-		console.log("hi!");
+class Joseki {
+	constructor(str) {
+		console.log(str);
 	}
 }
 
-class TestClass {
-	constructor(voice) {
-		this.voice = voice;
-	}
-
-	Speak() {
-		console.log("I am speaking", this.voice);
-	}
-}
-
-module.exports.TestClass = TestClass;
+export default Joseki
