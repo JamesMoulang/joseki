@@ -1,1 +1,1 @@
-"#joseki" 
+#joseki
