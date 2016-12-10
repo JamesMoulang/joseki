@@ -20,7 +20,7 @@ class Game {
 		document.onmouseup = this.onmouseup.bind(this);
 	}
 
-	start() {
+	start(key) {
 		this.state.switchState(key);
 		this.paused = false;
 		this.lastTimestamp = this.timestamp();
