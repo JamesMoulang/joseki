@@ -1,5 +1,5 @@
 class StateMachine {
-	constructor() {
+	constructor(states) {
 		this.currentState = null;
 		this.states = states;
 	}

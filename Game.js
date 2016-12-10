@@ -9,7 +9,7 @@ class Game {
 		this.gameWidth = 1024;
 		this.gameHeight = 1024;
 
-		this.state = new StateMachine();
+		this.state = new StateMachine(states);
 		this.canvases = [];
 		this.canvasIndex = 0;
 		window.onresize = this.resizeCanvases.bind(this);
@@ -45,7 +45,7 @@ class Game {
 	}
 
 	update() {
-		
+
 	}
 
 	render() {
