@@ -1,5 +1,7 @@
 import _ from 'underscore';
 
+import StateMachine from './StateMachine';
+
 class Game {
 	constructor(parentID, states) {
 		this.parentID = parentID;
@@ -7,7 +9,7 @@ class Game {
 		this.gameWidth = 1024;
 		this.gameHeight = 1024;
 
-		this.states = states;
+		this.state = new StateMachine();
 		this.canvases = [];
 		this.canvasIndex = 0;
 		window.onresize = this.resizeCanvases.bind(this);
@@ -18,20 +20,32 @@ class Game {
 		document.onmouseup = this.onmouseup.bind(this);
 	}
 
-	addState(state) {
-
+	start() {
+		this.state.switchState(key);
+		this.paused = false;
+		this.lastTimestamp = this.timestamp();
+		this.loop();
 	}
 
-	start(key) {
-
+	timestamp() {
+		return performance.now();
 	}
 
 	loop() {
-
+		var lastFrameTimeElapsed = this.timestamp() - this.lastTimestamp;
+		this.delta = lastFrameTimeElapsed / this.idealFrameTime;
+		this.update();
+		this.render();
+		this.lastTimestamp = this.timestamp();
+		if (lastFrameTimeElapsed < this.idealFrameTime) {
+			setTimeout(this.loop.bind(this), this.idealFrameTime - lastFrameTimeElapsed);
+		} else {
+			this.loop();
+		}
 	}
 
 	update() {
-
+		
 	}
 
 	render() {
