@@ -7,14 +7,17 @@ class Game {
 	constructor(parentID, states, fps=30) {
 		this.parentID = parentID;
 		this.gamePadding = 64;
-		this.gameWidth = 1024;
-		this.gameHeight = 1024;
+		this.width = 1024;
+		this.height = 1024;
 
 		this.fps = fps;
 		this.timeScaleFPS = 30;
 		this.idealFrameTime = 1000 / this.timeScaleFPS;
 		this.delta = 0;
 
+		this.backgroundColour = '#091431';
+		this.justDestroyed = false;
+		this.entities = [];
 		this.state = new StateMachine(states, this);
 		this.canvases = [];
 		this.canvasIndex = 0;
@@ -37,6 +40,12 @@ class Game {
 		return performance.now();
 	}
 
+	clearEntities() {
+		_.each(this.entities, (e) => {
+			e.destroy();
+		})
+	}
+
 	loop() {
 		var lastFrameTimeElapsed = this.timestamp() - this.lastTimestamp;
 		this.delta = lastFrameTimeElapsed / this.idealFrameTime;
@@ -50,16 +59,48 @@ class Game {
 		}
 	}
 
+	getCanvas(key) {
+		var canvas = _.findWhere(this.canvases, {key});
+		if (typeof(canvas) !== 'undefined') {
+			return canvas;
+		} else {
+			console.warn('No canvas with key ' + key);
+			return null;
+		}
+	}
+
 	update() {
 		this.state.update();
+		_.each(this.entities, (e) => {
+			e._update();
+		});
+		if (this.justDestroyed) {
+			this.entities = _.filter(this.entities, (e) => {
+				return e.alive
+			});
+			this.justDestroyed = false;
+		}
+	}
+
+	setBackgroundColour(colour) {
+		this.backgroundColour = colour;
+		_.each(this.canvases, (c) => {
+			c.backgroundColour = this.backgroundColour;
+		})
 	}
 
 	render() {
-
+		_.each(this.canvases, (canvas) => {
+			canvas.clear();
+		});
+		_.each(this.entities, (e) => {
+			e._render();
+		});
 	}
 
 	createCanvas(key) {
-		var canvas = new Canvas(this.parent, this.canvasIndex, 'canvas_' + key, this.gamePadding, this.gameWidth, this.gameHeight);
+		var canvas = new Canvas(this.parentID, this.canvasIndex, key, this.gamePadding, this.gameWidth, this.gameHeight);
+		canvas.backgroundColour = this.backgroundColour;
 		this.canvasIndex++;
 		this.canvases.push(canvas);
 		return canvas;

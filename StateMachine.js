@@ -25,7 +25,11 @@ class StateMachine {
 		}
 	}
 
-	switchState(key) {
+	switchState(key, clear) {
+		if (typeof(clear) !== 'undefined' && clear) {
+			this.game.clearEntities();
+		}
+
 		var nextState = _.findWhere(this.states, {key});
 		if (nextState !== undefined) {
 			if (this.currentState !== null) {
@@ -33,7 +37,6 @@ class StateMachine {
 			}
 
 			this.currentState = nextState;
-			console.log(this.game);
 			this.currentState.enter(this.game);
 		} else {
 			console.warn("No state with key " + key);

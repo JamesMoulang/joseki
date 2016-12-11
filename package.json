@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/JamesMoulang/joseki#readme",
   "dependencies": {
+    "uid": "0.0.2",
     "underscore": "^1.8.3"
   }
 }

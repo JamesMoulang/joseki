@@ -3,17 +3,18 @@ import Vector from './Vector';
 class Canvas {
 	constructor(parent, zIndex, id, padding=32, gameWidth=1024, gameHeight=1024) {
 		var div = document.getElementById(parent);
-
 		this.scale = 1;
 		this.padding = padding;
 		this.gameWidth = gameWidth;
 		this.gameHeight = gameHeight;
 		this.topLeft = new Vector(0, 0);
+		this.key = id;
 		var canv = document.createElement('canvas');
-		canv.id = id;
+		canv.id = 'canvas_' + id;
 		canv.style.zIndex = zIndex;
 		div.appendChild(canv);
 
+		this.backgroundColour = '#ffffff';
 		this.canvas = canv;
 		this.ctx = canv.getContext('2d');
 
@@ -50,16 +51,59 @@ class Canvas {
 	}
 
 	clear() {
-		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+		this.ctx.fillStyle = this.backgroundColour;
+		this.ctx.globalAlpha = 1;
+		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 	}
 
-	fillCircle(_pos, radius=128, colour='#ffffff', alpha=1) {
+	drawCircle(_pos, radius=128, fillStyle, strokeStyle, fillAlpha=1, strokeAlpha=1) {
 		var pos = this.topLeft.add(_pos.times(this.scale));
 		this.ctx.beginPath();
 		this.ctx.arc(pos.x, pos.y, radius*this.scale, 0, 2 * Math.PI, false);
-		this.ctx.fillStyle = colour;
-		this.ctx.globalAlpha = alpha;
-		this.ctx.fill();
+
+		if (typeof(fillStyle) !== 'undefined') {
+			this.ctx.fillStyle = fillStyle;
+			this.ctx.globalAlpha = fillAlpha;
+			this.ctx.fill();
+		}
+
+		if (typeof(strokeStyle) !== 'undefined') {
+			this.ctx.strokeStyle = strokeStyle;
+			this.ctx.globalAlpha = strokeAlpha;
+			this.ctx.stroke();
+		}
+	}
+
+	getPos(_pos) {
+		var pos = this.topLeft.add(_pos.times(this.scale));
+		return pos;
+	}
+
+	drawEllipse(_pos, radiusX, radiusY, fillStyle, strokeStyle, fillAlpha=1, strokeAlpha=1) {
+		var pos = this.getPos(_pos);
+		this.ctx.beginPath();
+		this.ctx.ellipse(
+			pos.x, 
+			pos.y, 
+			radiusX*this.scale, 
+			radiusY*this.scale, 
+			0, 
+			0, 
+			2*Math.PI, 
+			false
+		);
+
+		if (typeof(fillStyle) !== 'undefined') {
+			this.ctx.fillStyle = fillStyle;
+			this.ctx.globalAlpha = fillAlpha;
+			this.ctx.fill();
+		}
+
+		if (typeof(strokeStyle) !== 'undefined') {
+			this.ctx.strokeStyle = strokeStyle;
+			this.ctx.globalAlpha = strokeAlpha;
+			this.ctx.stroke();
+		}
 	}
 
 	fillRect(_x=0, _y=0, _width=128, _height=128, colour='#ffffff', alpha=1) {
