@@ -1,14 +1,21 @@
 class State {
 	constructor(key) {
 		this.key = key;
+		this.game = null;
 	}
 
-	enter() {
-
+	enter(game) {
+		this.game = game;
+		console.log("entering state " + this.key);
 	}
 
+	_update() {
+		if (this.game != null) {
+			this.update();
+		}
+	}
 	update() {
-
+		
 	}
 
 	exit() {

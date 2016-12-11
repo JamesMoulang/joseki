@@ -1,12 +1,19 @@
 import _ from 'underscore';
 
 class StateMachine {
-	constructor(states) {
+	constructor(states, game) {
 		this.currentState = null;
 		this.states = states;
+		this.game = game;
 	}
 
-	addState(state) {
+	update() {
+		if (this.currentState != null) {
+			this.currentState._update();
+		}
+	}
+
+	addState(newstate) {
 		var matchingKeys = _.filter(this.states, (state) => {
 			return state.key == newstate.key;
 		});
@@ -20,13 +27,14 @@ class StateMachine {
 
 	switchState(key) {
 		var nextState = _.findWhere(this.states, {key});
-		if (nextState !== null) {
+		if (nextState !== undefined) {
 			if (this.currentState !== null) {
 				this.currentState.exit();
 			}
 
 			this.currentState = nextState;
-			this.currentState.enter();
+			console.log(this.game);
+			this.currentState.enter(this.game);
 		} else {
 			console.warn("No state with key " + key);
 		}

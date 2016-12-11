@@ -1,15 +1,21 @@
 import _ from 'underscore';
 
 import StateMachine from './StateMachine';
+import Canvas from './Canvas';
 
 class Game {
-	constructor(parentID, states) {
+	constructor(parentID, states, fps=30) {
 		this.parentID = parentID;
 		this.gamePadding = 64;
 		this.gameWidth = 1024;
 		this.gameHeight = 1024;
 
-		this.state = new StateMachine(states);
+		this.fps = fps;
+		this.timeScaleFPS = 30;
+		this.idealFrameTime = 1000 / this.timeScaleFPS;
+		this.delta = 0;
+
+		this.state = new StateMachine(states, this);
 		this.canvases = [];
 		this.canvasIndex = 0;
 		window.onresize = this.resizeCanvases.bind(this);
@@ -45,7 +51,7 @@ class Game {
 	}
 
 	update() {
-
+		this.state.update();
 	}
 
 	render() {
