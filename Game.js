@@ -110,9 +110,7 @@ class Game {
 		_.each(this.canvases, function(c) {
 			c.resize();
 		});
-		this.drawBackground();
-		this.renderGrid();
-		this.redrawStones();
+		this.render();
 	}
 
 	//Mouse input
