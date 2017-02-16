@@ -9,7 +9,10 @@ class Circle extends Entity {
 		fillStyle,
 		strokeStyle,
 		fillAlpha=1, 
-		strokeAlpha=1
+		strokeAlpha=1,
+		startArc=0,
+		endArc=2*Math.PI,
+		anticlockwise=false,
 	) {
 		super(game, canvas, position);
 		this.radius = radius;
@@ -17,6 +20,9 @@ class Circle extends Entity {
 		this.strokeStyle = strokeStyle;
 		this.fillAlpha = fillAlpha;
 		this.strokeAlpha = strokeAlpha;
+		this.startArc = startArc;
+		this.endArc = endArc;
+		this.anticlockwise = anticlockwise;
 	}
 
 	render() {
@@ -26,7 +32,10 @@ class Circle extends Entity {
 			this.fillStyle, 
 			this.strokeStyle, 
 			this.fillAlpha, 
-			this.strokeAlpha
+			this.strokeAlpha,
+			this.startArc,
+			this.endArc,
+			this.anticlockwise
 		);
 	}
 }

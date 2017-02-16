@@ -2,6 +2,7 @@ import _ from 'underscore';
 
 import StateMachine from './StateMachine';
 import Canvas from './Canvas';
+import Vector from './Vector';
 
 class Game {
 	constructor(parentID, states, fps=30) {
@@ -21,6 +22,8 @@ class Game {
 		this.state = new StateMachine(states, this);
 		this.canvases = [];
 		this.canvasIndex = 0;
+		this.mousePos = new Vector(0, 0);
+		this.mousedown = false;
 		window.onresize = this.resizeCanvases.bind(this);
 		document.onmouseover = this.onmousemove.bind(this);
 		document.onmousemove = this.onmousemove.bind(this);
@@ -114,20 +117,17 @@ class Game {
 	}
 
 	//Mouse input
-	onmousemove() {
-
-	}
-	onmousemove() {
-
+	onmousemove(event) {
+		this.mousePos = this.getCanvas('game').screenToWorld(event.clientX, event.clientY);
 	}
 	onmouseclick() {
 
 	}
 	onmousedown() {
-
+		this.mousedown = true;
 	}
 	onmouseup() {
-
+		this.mousedown = false;
 	}
 }
 

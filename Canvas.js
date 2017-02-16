@@ -56,10 +56,10 @@ class Canvas {
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 	}
 
-	drawCircle(_pos, radius=128, fillStyle, strokeStyle, fillAlpha=1, strokeAlpha=1) {
+	drawCircle(_pos, radius=128, fillStyle, strokeStyle, fillAlpha=1, strokeAlpha=1, startArc=0, endArc=2*Math.PI, anticlockwise=false) {
 		var pos = this.topLeft.add(_pos.times(this.scale));
 		this.ctx.beginPath();
-		this.ctx.arc(pos.x, pos.y, radius*this.scale, 0, 2 * Math.PI, false);
+		this.ctx.arc(pos.x, pos.y, radius*this.scale, startArc, endArc, anticlockwise);
 
 		if (typeof(fillStyle) !== 'undefined') {
 			this.ctx.fillStyle = fillStyle;
@@ -72,6 +72,10 @@ class Canvas {
 			this.ctx.globalAlpha = strokeAlpha;
 			this.ctx.stroke();
 		}
+	}
+
+	screenToWorld(x, y) {
+		return (new Vector(x, y).minus(this.topLeft)).times(1/this.scale);
 	}
 
 	getPos(_pos) {
